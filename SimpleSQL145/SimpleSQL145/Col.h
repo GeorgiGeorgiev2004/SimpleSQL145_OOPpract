@@ -47,7 +47,7 @@ class Text : public Value
 	{
 		std::cout << value;
 	};
-	MyString value = nullptr;
+	MyString value = "";
 	Text(MyString& string) 
 	{
 		value = string;
@@ -75,14 +75,14 @@ public:
 		return new Real(*this);
 	};
 };
+
 class Col 
 {
 	MyString name;
-	int count;
 	Value** val = nullptr;
 
 	int capacity;
-	int count;
+	int size;
 
 	void copyFrom(const Col& other);
 	void free();
@@ -96,5 +96,4 @@ public:
 	Col(Col&& other) noexcept;
 	Col& operator=(Col&& other) noexcept;
 	~Col();
-
 };
