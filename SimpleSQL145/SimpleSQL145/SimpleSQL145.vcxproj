@@ -129,14 +129,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Col.cpp" />
+    <ClCompile Include="Integer.cpp" />
     <ClCompile Include="MyString.cpp" />
+    <ClCompile Include="Real.cpp" />
     <ClCompile Include="SimpleSQL145.cpp" />
+    <ClCompile Include="Table.cpp" />
+    <ClCompile Include="Text.cpp" />
+    <ClCompile Include="ValueFactory.cpp" />
+    <ClCompile Include="ValueFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database.h" />
     <ClInclude Include="Col.h" />
+    <ClInclude Include="Integer.h" />
     <ClInclude Include="MyString.h" />
+    <ClInclude Include="Real.h" />
     <ClInclude Include="Table.h" />
+    <ClInclude Include="Text.h" />
+    <ClInclude Include="Value.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

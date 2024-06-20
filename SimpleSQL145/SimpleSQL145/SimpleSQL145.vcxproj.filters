@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\ValueTypes">
+      <UniqueIdentifier>{501d7522-e9e4-40f0-9699-1d8d7fce794f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ValueTypesHeaders">
+      <UniqueIdentifier>{f30950d0-21c0-453f-9649-a55638194e70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SimpleSQL145.cpp">
@@ -23,6 +29,24 @@
     </ClCompile>
     <ClCompile Include="Col.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Table.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ValueFactory.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ValueFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Integer.cpp">
+      <Filter>Source Files\ValueTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files\ValueTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Real.cpp">
+      <Filter>Source Files\ValueTypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +61,18 @@
     </ClInclude>
     <ClInclude Include="MyString.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Value.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Integer.h">
+      <Filter>Header Files\ValueTypesHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Real.h">
+      <Filter>Header Files\ValueTypesHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files\ValueTypesHeaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

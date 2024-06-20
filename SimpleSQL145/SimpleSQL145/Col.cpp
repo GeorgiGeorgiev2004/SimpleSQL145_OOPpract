@@ -2,7 +2,7 @@
 
 void Col::free()
 {
-
+	name = " ";
 	for (size_t i = 0; i < size; i++)
 		delete val[i];  
 	delete[] val;
@@ -10,6 +10,7 @@ void Col::free()
 
 void Col::copyFrom(const Col& other)
 {
+	name = other.name;
 	val = new Value * [other.capacity];
 	size = other.size;
 	capacity = other.capacity;
@@ -26,11 +27,13 @@ void Col::moveFrom(Col&& other)
 {
 	size = other.size;
 	capacity = other.capacity;
+	name = other.name;
 
 	val = other.val;
 	other.val = nullptr;
 
 	other.size = other.capacity = 0;
+	other.name = "";
 }
 
 void Col::resize()
