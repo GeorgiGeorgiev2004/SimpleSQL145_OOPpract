@@ -44,7 +44,7 @@ void Table::resize()
 
 Table::Table() 
 {
-	name = " ";
+	name = "";
 	size = 0;
 	capacity = 8;
 };
@@ -77,4 +77,33 @@ Table& Table::operator=(Table&& other) noexcept
 Table::~Table() 
 {
 	free();
-};
+}
+MyString Table::getName() const
+{
+	return this->name;
+}
+
+void Table::setName(MyString _name)
+{
+	if (_name==nullptr)
+	{
+		std::cout << "Name not set!";
+		return;
+	}
+	name = _name;
+}
+
+Table Table::CreateTable()
+{
+	return Table();
+}
+;
+
+bool Table::AddCol(Col& col)
+{
+	if (capacity==size)
+	{
+		resize();
+	}
+	cols[size++] = col;
+}

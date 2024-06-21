@@ -14,6 +14,7 @@ void Col::copyFrom(const Col& other)
 	val = new Value * [other.capacity];
 	size = other.size;
 	capacity = other.capacity;
+	type = other.type;
 
 	for (size_t i = 0; i < size; i++)
 	{
@@ -28,10 +29,12 @@ void Col::moveFrom(Col&& other)
 	size = other.size;
 	capacity = other.capacity;
 	name = other.name;
+	type = other.type;
 
 	val = other.val;
 	other.val = nullptr;
 
+	other.type = ValueType::integer;
 	other.size = other.capacity = 0;
 	other.name = "";
 }
@@ -49,6 +52,7 @@ Col::Col()
 	name = "";
 	capacity = 8;
 	size = 0;
+	val = new  Value * [capacity];
 };
 Col::Col(const Col& other)
 {
@@ -79,4 +83,23 @@ Col& Col::operator=(Col&& other) noexcept
 Col::~Col() 
 {
 	free();
+}
+
+
+ValueType Col::getType() const
+{
+	return type;
+};
+void Col::setType(ValueType valt)
+{
+	type = valt;
+};
+
+
+Col Col::CreateCol(MyString _name, ValueType _type)
+{
+	Col result;
+	result.name = _name;
+	type = _type;
+	return result;
 };

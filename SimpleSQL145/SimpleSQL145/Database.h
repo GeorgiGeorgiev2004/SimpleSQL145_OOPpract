@@ -24,6 +24,5 @@ public:
 	~Database();
 
 
-	void CreateTable();
-	void DeleteTable();
+	bool ShowTables();
 };

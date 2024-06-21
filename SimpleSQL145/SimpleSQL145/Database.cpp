@@ -90,12 +90,33 @@ Database::~Database()
 	free();
 }
 
-void Database::CreateTable()
+bool Database::CreateTable(MyString& tableName)
 {
 
 }
 
-void Database::DeleteTable()
+bool Database::DeleteTable()
 {
 
+}
+
+bool Database::ShowTables()
+{
+	try
+	{
+		if (count==0)
+		{
+			std::cout << "Empty set";
+			return true;
+		}
+		for (size_t i = 0; i < count; i++)
+		{
+			std::cout << tables[i].getName()<<"\n";
+		}
+	}
+	catch (const std::exception&)
+	{
+		return false;
+	}
+	return true;
 }

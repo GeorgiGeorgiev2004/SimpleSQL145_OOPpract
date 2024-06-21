@@ -21,4 +21,12 @@ public:
 	Table(Table&& other) noexcept;
 	Table& operator=(Table&& other) noexcept;
 	~Table();
+
+	MyString getName() const;
+	void setName(MyString _name);
+
+	Table CreateTable();
+	
+	bool AddCol(Col& col);
 };
+	

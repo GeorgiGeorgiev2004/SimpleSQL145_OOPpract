@@ -9,14 +9,10 @@ enum class ValueType
 
 class Value
 {
-
 public:
 	virtual void printValue() const = 0;
 
 	virtual Value* clone() const = 0;
 
 	virtual ~Value() = default;
-
-private:
-	ValueType* type;
 };

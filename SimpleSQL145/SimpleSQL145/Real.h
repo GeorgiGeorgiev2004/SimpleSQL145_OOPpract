@@ -9,4 +9,8 @@ public:
 	Real(double val);
 	Value* clone() const override;
 	void printValue() const override;
+
+
+	void setValue(double val);
+	double getValue() const;
 };

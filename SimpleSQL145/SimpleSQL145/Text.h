@@ -9,4 +9,7 @@ public:
 	Text(MyString& string);
 	void printValue() const override;
 	Value* clone() const override;
+
+	void setValue(MyString val);
+	MyString getValue() const;
 };

@@ -17,3 +17,13 @@ Value* Text::clone() const
 {
 	return new Text(*this);
 }
+
+MyString Text::getValue() const
+{
+	return value;
+}
+
+void Text::setValue(MyString val)
+{
+	value = val;
+}

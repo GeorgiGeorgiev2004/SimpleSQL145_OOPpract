@@ -9,4 +9,7 @@ public:
 	Integer(int val);
 	Value* clone() const override;
 	void printValue() const override;
+
+	void setValue(int val);
+	int getValue() const;
 };
