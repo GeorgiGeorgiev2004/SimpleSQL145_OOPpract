@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Col.cpp" />
+    <ClCompile Include="Database.cpp" />
     <ClCompile Include="Integer.cpp" />
     <ClCompile Include="MyString.cpp" />
     <ClCompile Include="Real.cpp" />

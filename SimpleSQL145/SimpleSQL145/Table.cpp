@@ -42,7 +42,6 @@ void Table::resize()
 	cols = newCollection;
 }
 
-
 Table::Table() 
 {
 	name = " ";

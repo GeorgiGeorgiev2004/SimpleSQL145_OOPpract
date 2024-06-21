@@ -48,6 +48,9 @@
     <ClCompile Include="Real.cpp">
       <Filter>Source Files\ValueTypes</Filter>
     </ClCompile>
+    <ClCompile Include="Database.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database.h">

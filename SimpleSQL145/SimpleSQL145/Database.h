@@ -3,11 +3,20 @@
 #include "MyString.h"
 class Database 
 {
-	MyString name=nullptr;
+	MyString path = nullptr;
 	Table* tables = nullptr;
 
+	int count = 0;
+	int cap = 0;
+
+	void copyFrom(const Database& other);
+	void free();
+	void moveFrom(Database&& other);
+	void resize();
+
+public:
 	Database();
-	Database(char* _name);
+	Database(MyString path);
 	Database(const Database& other);
 	Database& operator=(const Database& other);
 	Database(Database&& other) noexcept;
