@@ -47,6 +47,7 @@ Table::Table()
 	name = "";
 	size = 0;
 	capacity = 8;
+	cols = new Col[capacity];
 };
 Table::Table(const Table& other)
 {
@@ -83,7 +84,7 @@ MyString Table::getName() const
 	return this->name;
 }
 
-void Table::setName(MyString _name)
+void Table::setName(MyString& _name)
 {
 	if (_name==nullptr)
 	{
@@ -97,7 +98,6 @@ Table Table::CreateTable()
 {
 	return Table();
 }
-;
 
 bool Table::AddCol(Col& col)
 {
@@ -106,4 +106,25 @@ bool Table::AddCol(Col& col)
 		resize();
 	}
 	cols[size++] = col;
+	return true;
+}
+
+std::ostream& operator<<(std::ostream& os, const Table& obj)
+{
+	os <<obj.name<< " " << obj.size << " " << obj.capacity << " ";
+	for (size_t i = 0; i < obj.size; i++)
+	{
+		os << obj.cols[i]<<" ";
+	}
+		return os;
+}
+
+std::istream& operator>>(std::istream& is, Table& obj)
+{
+	is >> obj.name >>obj.size >> obj.capacity;
+	for (size_t i = 0; i < obj.size; i++)
+	{
+		is >> obj.cols[i];
+	}
+	return is;
 }

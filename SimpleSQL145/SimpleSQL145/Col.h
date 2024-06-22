@@ -33,7 +33,10 @@ public:
 
 	ValueType getType() const;
 	void setType(ValueType valt);
-
+	
+	
+	friend std::ostream& operator<<(std::ostream& os, const Col& obj);
+	friend std::istream& operator>>(std::istream& is, Col& ref);
 
 	Col CreateCol(MyString _name, ValueType type);
 };

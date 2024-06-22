@@ -23,6 +23,12 @@ public:
 	Database& operator=(Database&& other) noexcept;
 	~Database();
 
+	bool DeleteTable(MyString& name);
+
+	bool ReadTablesFromFile(MyString& path);
+	bool AddTableToDb(Table& tb);
+
+	bool SaveInFile(MyString& path);
 
 	bool ShowTables();
 };

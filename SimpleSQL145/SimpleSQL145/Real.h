@@ -10,6 +10,8 @@ public:
 	Value* clone() const override;
 	void printValue() const override;
 
+	friend std::ostream& operator<<(std::ostream& os, const Real& obj);
+	friend std::istream& operator>>(std::istream& is, Real& ref);
 
 	void setValue(double val);
 	double getValue() const;

@@ -1,5 +1,7 @@
 #pragma once 
 #include "Database.h"
+#include <iostream>
+#include <fstream>
 
 void Database::copyFrom(const Database& other)
 {
@@ -48,6 +50,7 @@ Database::Database()
 	path = "";
 	cap = 8;
 	count = 0;
+	tables = new Table[cap];
 }
 
 Database::Database(MyString path)
@@ -90,14 +93,66 @@ Database::~Database()
 	free();
 }
 
-bool Database::CreateTable(MyString& tableName)
+bool Database::DeleteTable(MyString& name)
 {
+	for (size_t i = 0; i < count; i++)
+	{
+		if (tables[i].getName()==name)
+		{
+			std::swap(tables[i], tables[count-1]);
+			tables[count - 1].~Table();
+			return true;
+		}
+	}
 
+	return false;
+};
+
+bool Database::ReadTablesFromFile(MyString& path)
+{
+	std::ifstream ifs(path.c_str());
+	if (!ifs.is_open())
+	{
+		std::cout << "File couldn't open properly";
+		return false;
+	}
+	while (!ifs.eof())
+	{
+		int _count, _cap;
+		ifs >> _count;
+		ifs >> _cap;
+		if (_cap>count)
+		{
+			count = _count;
+			cap = _cap;
+		}
+		else
+		{
+			std::cout<< "Corrupted file! More elements than array space!\n";
+			return false;
+		}
+		for (size_t i = 0; i < count; i++)
+		{
+			ifs >> tables[i];
+		}
+	}
+	return false;
 }
 
-bool Database::DeleteTable()
+bool Database::AddTableToDb(Table& tb)
 {
+	return false;
+}
 
+bool Database::SaveInFile(MyString& path)
+{
+	std::ofstream ofs(path.c_str(), std::ios::app);
+	ofs<< count << " " << cap<<" ";
+	for (size_t i = 0; i < count; i++)
+	{
+		ofs << tables[i];
+	}
+	return true;
 }
 
 bool Database::ShowTables()

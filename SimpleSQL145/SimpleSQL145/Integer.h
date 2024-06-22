@@ -10,6 +10,9 @@ public:
 	Value* clone() const override;
 	void printValue() const override;
 
+	friend std::ostream& operator<<(std::ostream& os, const Integer& obj);
+	friend std::istream& operator>>(std::istream& is, Integer& ref);
+
 	void setValue(int val);
 	int getValue() const;
 };

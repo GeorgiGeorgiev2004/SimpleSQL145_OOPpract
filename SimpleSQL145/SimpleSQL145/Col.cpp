@@ -1,10 +1,13 @@
 #include "Col.h"
+#include <Text.h>
+#include <Integer.h>
+#include <Real.h>
 
 void Col::free()
 {
 	name = " ";
 	for (size_t i = 0; i < size; i++)
-		delete val[i];  
+		delete val[i];
 	delete[] val;
 }
 
@@ -43,12 +46,13 @@ void Col::resize()
 {
 	Value** newCollection = new Value * [capacity *= 2];
 	for (size_t i = 0; i < size; i++)
-		newCollection[i] = val[i]; 
+		newCollection[i] = val[i];
 	delete[] val;
 	val = newCollection;
 }
-Col::Col() 
+Col::Col()
 {
+	type = ValueType::integer;
 	name = "";
 	capacity = 8;
 	size = 0;
@@ -60,18 +64,18 @@ Col::Col(const Col& other)
 };
 Col& Col::operator=(const Col& other)
 {
-	if (this!=&other)
+	if (this != &other)
 	{
 		free();
 		copyFrom(other);
 	}
 	return *this;
 };
-Col::Col(Col&& other) noexcept 
+Col::Col(Col&& other) noexcept
 {
 	moveFrom(std::move(other));
 };
-Col& Col::operator=(Col&& other) noexcept 
+Col& Col::operator=(Col&& other) noexcept
 {
 	if (this != &other)
 	{
@@ -80,7 +84,7 @@ Col& Col::operator=(Col&& other) noexcept
 	}
 	return *this;
 };
-Col::~Col() 
+Col::~Col()
 {
 	free();
 }
@@ -103,3 +107,69 @@ Col Col::CreateCol(MyString _name, ValueType _type)
 	type = _type;
 	return result;
 };
+
+std::ostream& operator<<(std::ostream& os, const Col& obj)
+{
+	os << obj.name << " " << obj.size << " " << obj.capacity << " " << (int)obj.type << " ";
+
+	for (size_t i = 0; i < obj.size; i++)
+	{
+		//Controversial desicion. Could be done with unique pointers.
+		//Mid session I lack the time to spend on figuring that out as well.
+		switch (obj.type)
+		{
+		case ValueType::text:
+		{
+			Text* t = dynamic_cast<Text*> (obj.val[i]);
+			Text tt = *t;             // <--- This should not be mandatory. control+lmb led me to false references otherwise. This fixes it.
+			return os << tt << " ";
+		}
+		case ValueType::integer: {
+			Integer* t = dynamic_cast<Integer*> (obj.val[i]);
+			Integer tt = *t;
+			return os << tt << " ";
+		}
+		case ValueType::real: {
+			Real* t = dynamic_cast<Real*> (obj.val[i]);
+			Real tt = *t;
+			return os << tt << " ";
+		}
+		default:
+			break;
+		}
+	}
+	return os;
+}
+
+std::istream& operator>>(std::istream& is, Col& obj)
+{
+	int type = 0;
+	is >> obj.name >> obj.size >> obj.capacity >> type;
+	obj.type = (ValueType)type;
+	for (size_t i = 0; i < obj.size; i++)
+	{
+		//Controversial desicion. Could be done with unique pointers.
+		//Mid session I lack the time to spend on figuring that out as well.
+		switch (obj.type)
+		{
+		case ValueType::text: {
+			Text* t = dynamic_cast<Text*> (obj.val[i]);
+			Text tt = *t;
+			return is >> tt;
+		}
+		case ValueType::integer: {
+			Integer* t = dynamic_cast<Integer*> (obj.val[i]);
+			Integer tt = *t;
+			return is >> tt;
+		}
+		case ValueType::real: {
+			Real* t = dynamic_cast<Real*> (obj.val[i]);
+			Real tt = *t;
+			return is >> tt;
+		}
+		default:
+			break;
+		}
+	}
+	return is;
+}

@@ -7,7 +7,7 @@ class Table
 	Col* cols = nullptr;
 
 	int size = 0;
-	int capacity = 0;
+	int capacity = 8;
 
 	void copyFrom(const Table& other);
 	void free();
@@ -22,11 +22,13 @@ public:
 	Table& operator=(Table&& other) noexcept;
 	~Table();
 
+	friend std::ostream& operator<<(std::ostream& os, const Table& obj);
+	friend std::istream& operator>>(std::istream& is, Table& ref);
+
 	MyString getName() const;
-	void setName(MyString _name);
+	void setName(MyString& _name);
 
 	Table CreateTable();
-	
 	bool AddCol(Col& col);
 };
 	
