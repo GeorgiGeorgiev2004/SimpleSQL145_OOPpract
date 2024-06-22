@@ -27,7 +27,7 @@ int main()
 
     db.ShowTables();*/
 
-    MyString a= "create table test_table (field1 int, field2 real);";
+    MyString a= "create table test_table (field1 int, field2 real, field12 int, field11 int);";
     Database db(path);
     SQLResponse aaa = db.executeQuerry(a);
 }

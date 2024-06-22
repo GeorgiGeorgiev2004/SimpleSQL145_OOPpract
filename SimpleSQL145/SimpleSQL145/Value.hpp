@@ -1,10 +1,10 @@
-#include "MyString.h"
 #pragma once
+#include "MyString.h"
 enum class ValueType
 {
-	integer, 
-	text,
-	real
+	integer=0, 
+	text=1,
+	real=2
 };
 
 class Value

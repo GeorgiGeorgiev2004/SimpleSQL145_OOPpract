@@ -86,6 +86,18 @@ MyString& MyString::operator+=(const MyString& other)
     return *this;
 }
 
+MyString& MyString::operator+=(const char other)
+{
+    if (getSize() + 1 + 1 > _allocatedDataSize)
+        resize(dataToAllocByStringLen(getSize() + 1));
+    
+    _data[getSize()] = other; 
+    _data[getSize() + 1] = '\0';
+
+    _size = getSize() + 1;
+    return *this;
+}
+
 char& MyString::operator[](size_t index)
 {
     try

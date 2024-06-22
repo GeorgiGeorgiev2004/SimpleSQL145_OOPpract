@@ -109,6 +109,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -134,7 +135,6 @@
     <ClCompile Include="MyString.cpp" />
     <ClCompile Include="Real.cpp" />
     <ClCompile Include="SimpleSQL145.cpp" />
-    <ClCompile Include="SQLResponse.cpp" />
     <ClCompile Include="Table.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Utils.cpp" />

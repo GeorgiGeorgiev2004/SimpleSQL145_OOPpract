@@ -17,6 +17,7 @@ public:
     const char* c_str() const;
 
     MyString& operator+=(const MyString& other);
+    MyString& operator+=(const char other);
 
     char& operator[](size_t index);
     const char& operator[](size_t index) const;

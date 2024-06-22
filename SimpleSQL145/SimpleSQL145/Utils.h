@@ -1,4 +1,8 @@
 #pragma once
-bool SplitString(const char* str, const char del, char** res,int& size);
+#include "Database.h"
 
-void DeleteArgs(char** args, int size);
+MyString* SplitString(const char* str, const char del, int& size, int& countOfCommas, int& countOfParentasL);
+
+void DeleteArgs(MyString* args, int size);
+
+int GetType(MyString);

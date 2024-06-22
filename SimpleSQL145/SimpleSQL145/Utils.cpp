@@ -1,29 +1,78 @@
 #pragma once
 #include "Utils.h"
 #include "MyString.h"
-bool SplitString(const char* str, const char del, char** res,int& size)
+
+
+MyString* SplitString(const char* str, const char del, int& size,int& countOfCommas,int&countOfParentasL)
 {
-	MyString word;
-	int i = 0;
-	while (str[i]!='\0')
+	int countOfWS = 0;
+	int k = 0;
+	while (str[k]!='\0')
 	{
-		if (str[i]==del)
+		if (str[k]==' ')
 		{
-			if (word.getSize()!=0)
+			countOfWS++;
+		}
+		k++;
+	}
+	k = 0;
+	countOfWS++;
+	size = countOfWS;
+	MyString* result = new MyString[countOfWS];
+	MyString word="";
+	for (size_t i = 0; i < countOfWS-1;)
+	{
+		int j = 0;
+		while (str[j]!='\0')
+		{
+			if (str[j] == ',' || str[j] == '(' || str[j] == ')')
 			{
-				const char* a= word.c_str();
-				//res[size++] = a;
+				if (str[j] == ',')
+				{
+					countOfCommas++;
+				}if (str[j] == '(')
+				{
+					countOfParentasL++;
+				}
+				j++;
+				continue;
 			}
+			if (str[j] == ' '||str[j]==';')
+			{
+				result[k++] = word;
+				word = "";
+				i++;
+				j++;
+				continue;
+			}
+			else
+			{
+				word += str[j];
+			}
+			j++;
 		}
 	}
-	return true;
+	return result;
 }
 
-void DeleteArgs(char** args,int size)
+void DeleteArgs(MyString* args,int size)
 {
-	for (size_t i = 0; i < size; i++)
+	delete[] args;
+}
+
+int GetType(const MyString str)
+{
+	if (strcmp(str.c_str(),"int")==0)
 	{
-		delete[] args[i];
+		return (int)ValueType::integer;
 	}
-	delete args;
+	if (strcmp(str.c_str(), "real") == 0)
+	{
+		return (int)ValueType::real;
+	}
+	if (strcmp(str.c_str(), "text") == 0)
+	{
+		return (int)ValueType::text;
+	}
+	return-1;
 }

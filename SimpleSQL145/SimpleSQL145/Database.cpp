@@ -188,9 +188,10 @@ bool Database::ShowTables()
 SQLResponse Database::executeQuerry(MyString str)
 {
 	SQLResponse ans;
-	char** args = nullptr;
 	int i = 0;
-	SplitString(str.c_str(), ' ', args, i);
+	int CountComma = 0;
+	int CountPare = 0;
+	MyString* args = SplitString(str.c_str(), ' ', i,CountComma,CountPare);
 	if (args==nullptr)
 	{
 		ans.code = Responses::Querry_Bad;
@@ -206,7 +207,20 @@ SQLResponse Database::executeQuerry(MyString str)
 	}
 	if (args[0] == "create" && args[1] == "table")
 	{
-		Table t = this->CreateTable(args[3]);
+		Table t = this->CreateTable(args[2]);
+		for (size_t i = 3; i <= CountComma*2+3; i+=2)//3 to nullify the starting possition 1 for the 2 numbers that are around a single comma
+		{
+			int type = GetType(args[i + 1]);
+			if (type==-1)
+			{
+				ans.code = Responses::Querry_Bad;
+				return ans;
+			}
+			Col col = Col(args[i].c_str(), (ValueType)type);
+			t.AddCol(col);
+		}
+		ans.code = Responses::Querry_OK;
+		ans.rowsAffected = 1;
 	}
 	DeleteArgs(args, i);
 	return SQLResponse();
