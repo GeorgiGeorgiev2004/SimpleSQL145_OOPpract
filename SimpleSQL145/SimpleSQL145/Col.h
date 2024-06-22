@@ -26,6 +26,7 @@ class Col
 public:
 	Col();
 	Col(const Col&);
+	Col(MyString _name, ValueType type);
 	Col& operator=(const Col&);
 	Col(Col&& other) noexcept;
 	Col& operator=(Col&& other) noexcept;
@@ -38,5 +39,4 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const Col& obj);
 	friend std::istream& operator>>(std::istream& is, Col& ref);
 
-	Col CreateCol(MyString _name, ValueType type);
 };

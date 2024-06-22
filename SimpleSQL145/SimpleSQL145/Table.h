@@ -3,10 +3,10 @@
 #include "MyString.h"
 class Table 
 {
-	MyString name = nullptr;
+	MyString name;
 	Col* cols = nullptr;
 
-	int size = 0;
+	int size;
 	int capacity = 8;
 
 	void copyFrom(const Table& other);
@@ -16,6 +16,7 @@ class Table
 
 public:
 	Table();
+	Table(MyString name);
 	Table(const Table&);
 	Table& operator=(const Table&);
 	Table(Table&& other) noexcept;

@@ -61,7 +61,16 @@ Col::Col()
 Col::Col(const Col& other)
 {
 	copyFrom(other);
-};
+}
+Col::Col(MyString _name, ValueType _type)
+{
+	name = _name;
+	type = _type;
+	capacity = 8;
+	size = 0;
+	val = new  Value * [capacity];
+}
+;
 Col& Col::operator=(const Col& other)
 {
 	if (this != &other)
@@ -99,15 +108,6 @@ void Col::setType(ValueType valt)
 	type = valt;
 };
 
-
-Col Col::CreateCol(MyString _name, ValueType _type)
-{
-	Col result;
-	result.name = _name;
-	type = _type;
-	return result;
-};
-
 std::ostream& operator<<(std::ostream& os, const Col& obj)
 {
 	os << obj.name << " " << obj.size << " " << obj.capacity << " " << (int)obj.type << " ";
@@ -116,7 +116,7 @@ std::ostream& operator<<(std::ostream& os, const Col& obj)
 	{
 		//Controversial desicion. Could be done with unique pointers.
 		//Mid session I lack the time to spend on figuring that out as well.
-		switch (obj.type)
+		switch ((ValueType)obj.type)
 		{
 		case ValueType::text:
 		{
@@ -150,7 +150,7 @@ std::istream& operator>>(std::istream& is, Col& obj)
 	{
 		//Controversial desicion. Could be done with unique pointers.
 		//Mid session I lack the time to spend on figuring that out as well.
-		switch (obj.type)
+		switch ((ValueType)obj.type)
 		{
 		case ValueType::text: {
 			Text* t = dynamic_cast<Text*> (obj.val[i]);

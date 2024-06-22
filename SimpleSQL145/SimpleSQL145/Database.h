@@ -1,13 +1,15 @@
 #pragma once
 #include "Table.h"
 #include "MyString.h"
+#include "SQLResponse.h"
+
 class Database 
 {
-	MyString path = nullptr;
-	Table* tables = nullptr;
+	MyString path;
+	Table* tables;
 
-	int count = 0;
-	int cap = 0;
+	int count;
+	int cap;
 
 	void copyFrom(const Database& other);
 	void free();
@@ -23,7 +25,10 @@ public:
 	Database& operator=(Database&& other) noexcept;
 	~Database();
 
+	Table CreateTable(MyString);
 	bool DeleteTable(MyString& name);
+
+	SQLResponse executeQuerry(MyString);
 
 	bool ReadTablesFromFile(MyString& path);
 	bool AddTableToDb(Table& tb);
@@ -31,4 +36,5 @@ public:
 	bool SaveInFile(MyString& path);
 
 	bool ShowTables();
+
 };

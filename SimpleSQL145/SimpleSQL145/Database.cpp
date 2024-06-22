@@ -1,5 +1,7 @@
 #pragma once 
 #include "Database.h"
+#include "Utils.h"
+
 #include <iostream>
 #include <fstream>
 
@@ -56,6 +58,9 @@ Database::Database()
 Database::Database(MyString path)
 {
 	this->path = path;
+	cap = 8;
+	count = 0;
+	tables = new Table[cap];
 }
 
 Database::Database(const Database& other)
@@ -101,6 +106,7 @@ bool Database::DeleteTable(MyString& name)
 		{
 			std::swap(tables[i], tables[count-1]);
 			tables[count - 1].~Table();
+			count--;
 			return true;
 		}
 	}
@@ -113,35 +119,38 @@ bool Database::ReadTablesFromFile(MyString& path)
 	std::ifstream ifs(path.c_str());
 	if (!ifs.is_open())
 	{
-		std::cout << "File couldn't open properly";
+		std::cout << "File couldn't open properly \n";
 		return false;
 	}
-	while (!ifs.eof())
+	int _count, _cap;
+	ifs >> _count;
+	ifs >> _cap;
+	if (_cap > count)
 	{
-		int _count, _cap;
-		ifs >> _count;
-		ifs >> _cap;
-		if (_cap>count)
-		{
-			count = _count;
-			cap = _cap;
-		}
-		else
-		{
-			std::cout<< "Corrupted file! More elements than array space!\n";
-			return false;
-		}
-		for (size_t i = 0; i < count; i++)
-		{
-			ifs >> tables[i];
-		}
+		count = _count;
+		cap = _cap;
 	}
+	else
+	{
+		std::cout << "Corrupted file! More elements than array space!\n";
+		return false;
+	}
+	for (size_t i = 0; i < count; i++)
+	{
+		ifs >> tables[i];
+	}
+	
 	return false;
 }
 
 bool Database::AddTableToDb(Table& tb)
 {
-	return false;
+	if (cap==count)
+	{
+		resize();
+	}
+	tables[count++] = tb;
+	return true;
 }
 
 bool Database::SaveInFile(MyString& path)
@@ -152,16 +161,16 @@ bool Database::SaveInFile(MyString& path)
 	{
 		ofs << tables[i];
 	}
+	ofs.close();
 	return true;
 }
-
 bool Database::ShowTables()
 {
 	try
 	{
 		if (count==0)
 		{
-			std::cout << "Empty set";
+			std::cout << "Empty set \n";
 			return true;
 		}
 		for (size_t i = 0; i < count; i++)
@@ -174,4 +183,36 @@ bool Database::ShowTables()
 		return false;
 	}
 	return true;
+}
+
+SQLResponse Database::executeQuerry(MyString str)
+{
+	SQLResponse ans;
+	char** args = nullptr;
+	int i = 0;
+	SplitString(str.c_str(), ' ', args, i);
+	if (args==nullptr)
+	{
+		ans.code = Responses::Querry_Bad;
+		return ans;
+	}
+	if (args[0] == "show" && args[1] == "table")
+	{
+		if (this->ShowTables())
+		{
+			ans.code = Responses::Querry_OK;
+			return ans;
+		}
+	}
+	if (args[0] == "create" && args[1] == "table")
+	{
+		Table t = this->CreateTable(args[3]);
+	}
+	DeleteArgs(args, i);
+	return SQLResponse();
+}
+
+Table Database::CreateTable(MyString _name)
+{
+	return Table(_name);
 }

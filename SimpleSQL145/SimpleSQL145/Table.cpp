@@ -48,11 +48,20 @@ Table::Table()
 	size = 0;
 	capacity = 8;
 	cols = new Col[capacity];
-};
+}
 Table::Table(const Table& other)
 {
 	copyFrom(other);
-};
+}
+Table::Table(MyString _name)
+{
+	name = _name;
+	size = 0;
+	capacity = 8;
+	cols = new Col[capacity];
+}
+
+
 Table& Table::operator=(const Table& other)
 {
 	if (this != &other)
