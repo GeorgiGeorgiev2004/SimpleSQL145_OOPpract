@@ -18,11 +18,12 @@ double Real::getValue() const
 }
 ;
 Real::Real()
-{
-	value = 0;
+{ 
+
 }
 Real::Real(double val)
 {
+	HasValue = true;
 	value = val;
 }
 Value* Real::clone() const

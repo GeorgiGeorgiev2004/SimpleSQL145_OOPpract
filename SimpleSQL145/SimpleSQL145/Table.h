@@ -6,7 +6,7 @@ class Table
 	MyString name;
 	Col* cols = nullptr;
 
-	int size;
+	int size=0;
 	int capacity = 8;
 
 	void copyFrom(const Table& other);
@@ -35,8 +35,11 @@ public:
 	int GetRows()const;
 	Table CreateTable();
 
-	bool ContainsCol(MyString& mstr, int& index);
 	bool ContainsCol(MyString& mstr);
+	
+	bool ContainsCol(MyString& mstr, int& index);
+
+	bool RenameCol(const MyString& mstr,const int index);
 
 	bool AddValueInCol(int indexCol, const Value& val);
 	ValueType GetTypeOfColByInd(int ind);

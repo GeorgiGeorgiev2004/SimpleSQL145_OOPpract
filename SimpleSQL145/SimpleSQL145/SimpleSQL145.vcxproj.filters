@@ -48,10 +48,10 @@
     <ClCompile Include="Real.cpp">
       <Filter>Source Files\ValueTypes</Filter>
     </ClCompile>
-    <ClCompile Include="Database.cpp">
+    <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
+    <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

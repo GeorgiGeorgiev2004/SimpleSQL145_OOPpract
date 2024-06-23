@@ -29,7 +29,7 @@ public:
 	Table CreateTable(MyString);
 	bool DeleteTable(MyString& name);
 
-	SQLResponse executeQuerry(MyString);
+	SQLResponse executeQuerry(MyString&);
 
 	bool ReadTablesFromFile(MyString& path);
 	bool AddTableToDb(Table& tb);

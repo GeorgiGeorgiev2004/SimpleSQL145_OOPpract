@@ -111,6 +111,10 @@ MyString Col::getName() const
 {
 	return MyString(this->name);
 }
+void Col::setName(const MyString& newName)
+{
+	name = newName;
+}
 ;
 void Col::setType(ValueType valt)
 {
@@ -118,9 +122,15 @@ void Col::setType(ValueType valt)
 }
 void Col::printValueAtIndex(uint16_t index)
 {
-	if (index>=size)
+
+	if (index >= size)
 	{
-		std::cout << "Error: Index out of bounds.";
+		std::cout << "NULL";
+		return;
+	}
+	if (!val[index]->HasValue)
+	{
+		std::cout << "NULL";
 		return;
 	}
 	else
@@ -130,14 +140,16 @@ void Col::printValueAtIndex(uint16_t index)
 }
 bool Col::AddValue(const Value& val)
 {
-	if (size==capacity)
+	if (size>=capacity)
 	{
 		resize();
+		AddValue(val);
+		return true;
 	}
 	int count = size;
 	this->val[count++] = val.clone();
 	this->size++;
-	return false;
+	return true;
 }
 ;
 

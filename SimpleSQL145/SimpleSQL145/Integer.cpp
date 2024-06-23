@@ -4,6 +4,7 @@
 
 void Integer::printValue() const
 {
+
 	std::cout << value;
 }
 
@@ -19,10 +20,11 @@ int Integer::getValue() const
 
 Integer::Integer()
 {
-	value = 0;
+	
 }
 Integer::Integer(int val)
 {
+	HasValue = true;
 	value = val;
 }
 Value* Integer::clone() const 

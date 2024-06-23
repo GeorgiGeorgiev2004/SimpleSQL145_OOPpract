@@ -97,7 +97,7 @@ MyString Table::getName() const
 
 void Table::setName(MyString& _name)
 {
-	if (_name==nullptr)
+	if (_name.c_str() == nullptr)
 	{
 		std::cout << "Name not set!";
 		return;
@@ -132,6 +132,12 @@ bool Table::ContainsCol(MyString& mstr)
 {
 	int i = 0;
 	return ContainsCol(mstr, i);
+}
+
+bool Table::RenameCol(const MyString& mstr, const int index)
+{
+	this->cols[index].setName(mstr);
+	return false;
 }
 
 bool Table::AddValueInCol(int indexCol,const Value& val)

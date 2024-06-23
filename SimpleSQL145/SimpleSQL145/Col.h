@@ -35,6 +35,7 @@ public:
 	ValueType getType() const;
 	int getSize() const;
 	MyString getName() const;
+	void setName(const MyString& newName);
 
 	void setType(ValueType valt);
 	void printValueAtIndex(uint16_t index);

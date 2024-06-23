@@ -7,10 +7,11 @@ void Text::printValue() const
 };
 Text::Text()
 {
-	value = "NULL";
+
 }
 Text::Text(MyString& string)
 {
+	HasValue = true;
 	value = string;
 }
 Value* Text::clone() const
