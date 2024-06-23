@@ -1,6 +1,8 @@
 #pragma once 
 #include "Database.h"
 #include "Utils.h"
+#include"Integer.h"
+#include"Real.h"
 
 #include <iostream>
 #include <fstream>
@@ -97,7 +99,7 @@ Database::~Database()
 	free();
 }
 
-bool Database::DeleteTable(MyString& name)
+bool Database::DeleteTable(const MyString& name)
 {
 	for (size_t i = 0; i < count; i++)
 	{
@@ -113,7 +115,7 @@ bool Database::DeleteTable(MyString& name)
 	return false;
 };
 
-bool Database::ReadTablesFromFile(MyString& path)
+bool Database::ReadTablesFromFile(const MyString& path)
 {
 	std::ifstream ifs(path.c_str());
 	if (!ifs.is_open())
@@ -142,7 +144,7 @@ bool Database::ReadTablesFromFile(MyString& path)
 	return false;
 }
 
-bool Database::AddTableToDb(Table& tb)
+bool Database::AddTableToDb(const Table& tb)
 {
 	if (cap == count)
 	{
@@ -152,7 +154,7 @@ bool Database::AddTableToDb(Table& tb)
 	return true;
 }
 
-bool Database::SaveInFile(MyString& path)
+bool Database::SaveInFile(const MyString& path)
 {
 	std::ofstream ofs(path.c_str(), std::ios::app);
 	ofs << count << " " << cap << " ";
@@ -220,9 +222,10 @@ bool Database::ContainsTable(const Table& tab)
 }
 
 
-SQLResponse Database::executeQuerry(MyString& str)
+SQLResponse Database::executeQuerry(const MyString& str)
 {
 	SQLResponse ans;
+	ans.rowsAffected = 0;
 	int CountOfArguments = 0;
 	int CountComma = 0;
 	int CountPare = 0;
@@ -238,20 +241,22 @@ SQLResponse Database::executeQuerry(MyString& str)
 		if (this->ShowTables())
 		{
 			ans.code = Responses::Querry_OK;
+			ans.rowsAffected = 0;
 			DeleteArgs(args, CountOfArguments);
 			return ans;
 		}
 	}
-	if (args[0] == "drop" && args[1] == "table")
+	else if (args[0] == "drop" && args[1] == "table")
 	{
 		if (this->DeleteTable(args[2]))
 		{
 			ans.code = Responses::Querry_OK;
+			ans.rowsAffected = 0;
 			DeleteArgs(args, CountOfArguments);
 			return ans;
 		}
 	}
-	if (args[0] == "create" && args[1] == "table")
+	else if (args[0] == "create" && args[1] == "table")
 	{
 		Table t = this->CreateTable(args[2]);
 		for (size_t i = 3; i <= CountComma * 2 + 3; i += 2)//3 to nullify the starting possition *2 for the pairs of name-value
@@ -270,7 +275,7 @@ SQLResponse Database::executeQuerry(MyString& str)
 		ans.code = Responses::Querry_OK;
 		ans.rowsAffected = 1;
 	}
-	if (args[0] == "insert" && args[1] == "into")
+	else if (args[0] == "insert" && args[1] == "into")
 	{
 		int i = 0;
 		if (!ContainsTable(Table(args[2]), i))
@@ -288,6 +293,7 @@ SQLResponse Database::executeQuerry(MyString& str)
 			{
 				std::cout << "There is no column with the name " << args[j].c_str();
 				ans.code == Responses::Querry_Bad;
+				ans.rowsAffected = 0;
 				DeleteArgs(args, CountOfArguments);
 				return ans;
 			}
@@ -303,10 +309,11 @@ SQLResponse Database::executeQuerry(MyString& str)
 				Value* val = valueFactory(vt, args[k]);
 				t.AddValueInCol(i, *val);
 			}
+			ans.rowsAffected++;
 		}
 		this->tables[i] = t;
 	}
-	if (args[0] == "select")
+	else if (args[0] == "select")
 	{
 		int j = 1;
 		while (args[j] != MyString("from"))
@@ -348,7 +355,7 @@ SQLResponse Database::executeQuerry(MyString& str)
 			delete[] st;
 		}
 	}
-	if (args[0] == "alter" && args[1] == "table")
+	else if (args[0] == "alter" && args[1] == "table")
 	{
 		int index = 0;
 		if (!this->ContainsTable(args[2]), index)
@@ -370,11 +377,14 @@ SQLResponse Database::executeQuerry(MyString& str)
 			if (type == -1)
 			{
 				ans.code = Responses::Querry_Bad;
+				ans.rowsAffected = 0;
 				DeleteArgs(args, CountOfArguments);
 				return ans;
 			}
 			Col col = Col(args[4].c_str(), (ValueType)type);
 			this->tables[index].AddCol(col);
+			ans.rowsAffected= tables[index].GetRows();
+			ans.code = Responses::Querry_OK;
 		}
 		else if (args[3] == "rename")
 		{
@@ -383,22 +393,160 @@ SQLResponse Database::executeQuerry(MyString& str)
 			{
 				ans.code = Responses::Querry_Bad;
 				DeleteArgs(args, CountOfArguments);
+				ans.rowsAffected = 0;
 				return ans;
 			}
 			else
 			{
 				this->tables[index].RenameCol(args[7], colind);
+				ans.code = Responses::Querry_OK;
+				ans.rowsAffected = 1;
 			}
 		}
 		else if (args[3] == "drop")
 		{
 			Col a(args[5], ValueType::integer);
+			int n=tables[index].GetRows();
 			if (this->tables[index].RemoveCol(a))
 			{
 				ans.code = Responses::Querry_OK;
+				ans.rowsAffected = n;
 				ans.rowsAffected = tables[0].GetRows();
 			}
 		}
+	}
+	else if (args[0] == "update")
+	{
+		int index = 0;
+		if (!this->ContainsTable(args[1]), index)
+		{
+			ans.code = Responses::Querry_Bad;
+			DeleteArgs(args, CountOfArguments);
+			return ans;
+		}
+		int colIndex = 0;
+		if (!this->tables[index].ContainsCol(args[3], colIndex))
+		{
+			ans.code = Responses::Querry_Bad;
+			DeleteArgs(args, CountOfArguments);
+			std::cout << "No column of the name: " << args[3] << " found!\n";
+			return ans;
+
+		}
+		switch (CountOfArguments)
+		{
+		case 6:
+		{
+			Col a(args[3], this->tables[index].GetTypeOfColByInd(colIndex));
+			for (size_t i = 0; i < this->tables[index].GetRows(); i++)
+			{
+				Value* val = valueFactory(a.getType(), args[5]);
+				a.AddValue(*val);
+			}
+			this->tables[index].RemoveCol(a);
+			this->tables[index].AddCol(a);
+		}
+		break;
+		case 10:
+		{
+			int indexChange = colIndex;
+			int ConditionIndex = 0;
+			if (!this->tables[index].ContainsCol(args[7], ConditionIndex))
+			{
+				ans.code = Responses::Querry_Bad;
+				DeleteArgs(args, CountOfArguments);
+				std::cout << "No column of the name: " << args[7] << " found!\n";
+				return ans;
+
+			}
+
+			Col* change = this->tables[index].GetColById(indexChange);
+			Col* condition = this->tables[index].GetColById(ConditionIndex);
+			switch (condition->getType())
+			{
+			case ValueType::integer:
+				for (size_t i = 0; i < this->tables->GetRows(); i++)
+				{
+					Value* v = condition->GetValueAtIndex(i);
+					Integer* t = dynamic_cast<Integer*> (v);
+					int value = t->getValue();
+					switch (args[8][0])
+					{
+					case '<':
+						if (t->getValue()< atoi(args[9].c_str()))
+						{
+							Integer in = Integer(atoi(args[5].c_str()));
+							change->AddValueAt(in, i);
+						}
+						break;
+					case'=':
+						if (t->getValue() == atoi(args[9].c_str()))
+						{
+							Integer in = Integer(atoi(args[5].c_str()));
+							change->AddValueAt(in, i);
+						}
+						break;
+					case'>':
+						if (value > atoi(args[9].c_str()))
+						{
+							Integer in = Integer(atoi(args[5].c_str()));
+							change->AddValueAt(in, i);
+						}
+						break;
+					default:
+						break;
+					}
+				}
+				break;
+			case ValueType::real:
+				for (size_t i = 0; i < this->tables->GetRows(); i++)
+				{
+					Real* t = dynamic_cast<Real*> (condition->GetValueAtIndex(i));
+					double value = t->getValue();
+					switch (args[8][0])
+					{
+					case '<':
+						if (value - atoi(args[9].c_str())<0.001)
+						{
+							Real in = Real(atoi(args[5].c_str()));
+							change->AddValueAt(in, i);
+						}
+						break;
+					case'=':
+						if (value - atoi(args[9].c_str())==0.001)
+						{
+							Real in = Real(atoi(args[5].c_str()));
+							change->AddValueAt(in, i);
+						}
+						break;
+					case'>':
+						if (value - atoi(args[9].c_str())>0.001)
+						{
+							Real in = Real(atoi(args[5].c_str()));
+							change->AddValueAt(in, i);
+						}
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
+		break;
+		case 14:
+		{
+
+		}
+		break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		ans.code = Responses::Querry_Bad;
+		ans.rowsAffected = 0;
+		std::cout << "Unknown command!\n";
 	}
 	DeleteArgs(args, CountOfArguments);
 	return ans;

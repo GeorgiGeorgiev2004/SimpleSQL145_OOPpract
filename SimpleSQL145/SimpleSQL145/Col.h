@@ -37,10 +37,13 @@ public:
 	MyString getName() const;
 	void setName(const MyString& newName);
 
-	void setType(ValueType valt);
-	void printValueAtIndex(uint16_t index);
+	Value* GetValueAtIndex(const int ind);
+
+	void setType(const ValueType valt);
+	void printValueAtIndex(const uint16_t index);
 
 	bool AddValue(const Value& val);
+	bool AddValueAt(const Value& val, const int ind);
 	
 	friend std::ostream& operator<<(std::ostream& os, const Col& obj);
 	friend std::istream& operator>>(std::istream& is, Col& ref);

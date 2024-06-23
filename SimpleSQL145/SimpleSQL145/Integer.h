@@ -2,7 +2,7 @@
 #include"Value.hpp"
 class Integer : public Value
 {
-	int value;
+	int value = 0;
 
 public:
 	Integer();

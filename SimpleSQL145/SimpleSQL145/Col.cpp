@@ -6,8 +6,13 @@
 void Col::free()
 {
 	name = " ";
-	for (size_t i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++) {
+		if (val[i]==nullptr)
+		{
+			continue;
+		}
 		delete val[i];
+	}
 	delete[] val;
 }
 
@@ -115,12 +120,21 @@ void Col::setName(const MyString& newName)
 {
 	name = newName;
 }
+Value* Col::GetValueAtIndex(const int ind)
+{
+	if (ind >= size)
+	{
+		std::cout << "Out of bounds!";
+		return nullptr;
+	}
+	return this->val[ind];
+}
 ;
-void Col::setType(ValueType valt)
+void Col::setType(const ValueType valt)
 {
 	type = valt;
 }
-void Col::printValueAtIndex(uint16_t index)
+void Col::printValueAtIndex(const uint16_t index)
 {
 
 	if (index >= size)
@@ -143,15 +157,26 @@ bool Col::AddValue(const Value& val)
 	if (size>=capacity)
 	{
 		resize();
-		AddValue(val);
-		return true;
 	}
 	int count = size;
 	this->val[count++] = val.clone();
 	this->size++;
 	return true;
 }
-;
+bool Col::AddValueAt(const Value& val, const int ind)
+{
+	if (size >= capacity)
+	{
+		resize();
+		AddValueAt(val, ind);
+	}
+	if (this->val[ind]==nullptr)
+	{
+		this->size++;
+	}
+	this->val[ind] = val.clone();
+	return true;
+}
 
 std::ostream& operator<<(std::ostream& os, const Col& obj)
 {

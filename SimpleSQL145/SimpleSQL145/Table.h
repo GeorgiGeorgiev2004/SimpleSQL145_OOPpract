@@ -27,24 +27,26 @@ public:
 	friend std::istream& operator>>(std::istream& is, Table& ref);
 
 	MyString getName() const;
-	void setName(MyString& _name);
+	void setName(const MyString& _name);
 
 	bool PrintTable();
-	bool PrintTable(MyString* mstrp, const int s);
+	bool PrintTable(const MyString* mstrp, const int s);
 
 	int GetRows()const;
 	Table CreateTable();
 
-	bool ContainsCol(MyString& mstr);
+	bool ContainsCol(const MyString& mstr);
 	
-	bool ContainsCol(MyString& mstr, int& index);
+	bool ContainsCol(const MyString& mstr, int& index);
 
 	bool RenameCol(const MyString& mstr,const int index);
 
-	bool AddValueInCol(int indexCol, const Value& val);
-	ValueType GetTypeOfColByInd(int ind);
+	Col* GetColById(const int ind);
 
-	bool AddCol(Col& col);
+	bool AddValueInCol(const int indexCol, const Value& val);
+	ValueType GetTypeOfColByInd(const int ind);
 
-	bool RemoveCol(Col& col);
+	bool AddCol(const Col& col);
+
+	bool RemoveCol(const Col& col);
 };

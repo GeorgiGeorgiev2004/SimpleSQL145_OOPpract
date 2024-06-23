@@ -3,7 +3,7 @@
 
 class Real : public Value
 {
-	double value;
+	double value=0.0;
 public:
 	Real();
 	Real(double val);

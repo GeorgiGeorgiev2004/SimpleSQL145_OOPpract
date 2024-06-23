@@ -3,13 +3,18 @@
 #include "Database.h"
 int main()
 {
-    MyString path = "test.txt";
-    Database db(path);
-	char* cmd= new char[1024];
-	while (true)
-	{
+	//As the example failed to clear up suspicions around the white spaces around some parts of the code
+	//Please place ws's inbetween all elements of the input and do not forget the ';' at the end.
+	//Example : "update table_name set column_name = value where column_name < 3;"
+
+	MyString path = "test.txt";
+	Database db(path);
+	char* cmd = new char[1024];
+	do {
+		std::cout << "ssql145>";
+		std::cin.getline(cmd, 1023);
 		MyString command(cmd);
-		if (command=="end")
+		if (command == "end")
 		{
 			break;
 		}
@@ -18,18 +23,19 @@ int main()
 		{
 		case Responses::Querry_OK:
 			std::cout << "Querry_OK\n";
+			std::cout << "rows affected: " << res.rowsAffected << "\n";
 			break;
 		case Responses::Querry_Bad:
 			std::cout << "Querry_Bad\n";
+			std::cout << "rows affected: " << res.rowsAffected << "\n";
 			break;
 		default:
 			break;
 		}
-		std::cout << "ssql145>";
-		std::cin.getline(cmd, 1023);
-	}
+	} while (true);
+
 	delete[] cmd;
-	
+
 	//MyString c1 = "show tables;";
 	//MyString c2 = "create table test_table (field1 int, field2 real);";
 	//MyString c3 = "select * from test_table;";

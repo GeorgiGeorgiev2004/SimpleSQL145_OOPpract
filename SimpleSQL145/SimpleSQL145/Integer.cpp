@@ -20,7 +20,7 @@ int Integer::getValue() const
 
 Integer::Integer()
 {
-	
+	value = 0;
 }
 Integer::Integer(int val)
 {

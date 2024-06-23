@@ -4,6 +4,7 @@
 #include "SQLResponse.h"
 #include "ValueFactory.h"
 
+
 class Database 
 {
 	MyString path;
@@ -26,19 +27,19 @@ public:
 	Database& operator=(Database&& other) noexcept;
 	~Database();
 
-	Table CreateTable(MyString);
-	bool DeleteTable(MyString& name);
+	Table CreateTable(const MyString);
+	bool DeleteTable(const MyString& name);
 
-	SQLResponse executeQuerry(MyString&);
+	SQLResponse executeQuerry(const MyString&);
 
-	bool ReadTablesFromFile(MyString& path);
-	bool AddTableToDb(Table& tb);
+	bool ReadTablesFromFile(const MyString& path);
+	bool AddTableToDb(const Table& tb);
 
-	bool SaveInFile(MyString& path);
+	bool SaveInFile(const MyString& path);
 
 	bool ContainsTable(const Table& tab,int& i);
 	bool ContainsTable(const Table& tab);
 
 	bool ShowTables();
-	SQLResponse PrintTableById(int id);
+	SQLResponse PrintTableById(const int id);
 };

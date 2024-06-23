@@ -55,7 +55,7 @@ Table::Table(const Table& other)
 {
 	copyFrom(other);
 }
-Table::Table(MyString _name)
+Table::Table(const MyString _name)
 {
 	name = _name;
 	size = 0;
@@ -95,7 +95,7 @@ MyString Table::getName() const
 	return this->name;
 }
 
-void Table::setName(MyString& _name)
+void Table::setName(const MyString& _name)
 {
 	if (_name.c_str() == nullptr)
 	{
@@ -115,7 +115,7 @@ Table Table::CreateTable()
 	return Table();
 }
 
-bool Table::ContainsCol(MyString& mstr, int& index)
+bool Table::ContainsCol(const MyString& mstr, int& index)
 {
 	for (size_t i = 0; i < size; i++)
 	{
@@ -128,7 +128,7 @@ bool Table::ContainsCol(MyString& mstr, int& index)
 	return false;
 }
 
-bool Table::ContainsCol(MyString& mstr)
+bool Table::ContainsCol(const MyString& mstr)
 {
 	int i = 0;
 	return ContainsCol(mstr, i);
@@ -140,18 +140,28 @@ bool Table::RenameCol(const MyString& mstr, const int index)
 	return false;
 }
 
-bool Table::AddValueInCol(int indexCol,const Value& val)
+Col* Table::GetColById(const int ind)
+{
+	if (ind>size)
+	{
+		std::cout << "Out of bounds!";
+		return nullptr;
+	}
+	return &cols[ind];
+}
+
+bool Table::AddValueInCol(const int indexCol,const Value& val)
 {
 	this->cols[indexCol].AddValue(val);
 	return true;
 }
 
-ValueType Table::GetTypeOfColByInd(int ind)
+ValueType Table::GetTypeOfColByInd(const int ind)
 {
 	return this->cols[ind].getType();
 }
 
-bool Table::AddCol(Col& col)
+bool Table::AddCol(const Col& col)
 {
 	if (capacity==size)
 	{
@@ -161,7 +171,7 @@ bool Table::AddCol(Col& col)
 	return true;
 }
 
-bool Table::RemoveCol(Col& col)
+bool Table::RemoveCol(const Col& col)
 {
 	for (size_t i = 0; i < this->size; i++)
 	{
@@ -199,7 +209,7 @@ bool Table::PrintTable()
 	return true;
 }
 
-bool Table::PrintTable(MyString* mstrpn, const int s)
+bool Table::PrintTable(const MyString* mstrpn, const int s)
 {
 	Table t("TempT");
 	for (size_t i = 0; i < s; i++)
