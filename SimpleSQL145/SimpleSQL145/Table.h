@@ -30,10 +30,16 @@ public:
 	void setName(MyString& _name);
 
 	bool PrintTable();
+	bool PrintTable(MyString* mstrp, const int s);
 
+	int GetRows()const;
 	Table CreateTable();
 
 	bool ContainsCol(MyString& mstr, int& index);
+	bool ContainsCol(MyString& mstr);
+
+	bool AddValueInCol(int indexCol, const Value& val);
+	ValueType GetTypeOfColByInd(int ind);
 
 	bool AddCol(Col& col);
 

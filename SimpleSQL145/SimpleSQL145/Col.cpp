@@ -128,6 +128,17 @@ void Col::printValueAtIndex(uint16_t index)
 	  this->val[index]->printValue();
 	}
 }
+bool Col::AddValue(const Value& val)
+{
+	if (size==capacity)
+	{
+		resize();
+	}
+	int count = size;
+	this->val[count++] = val.clone();
+	this->size++;
+	return false;
+}
 ;
 
 std::ostream& operator<<(std::ostream& os, const Col& obj)

@@ -2,6 +2,7 @@
 #include "Table.h"
 #include "MyString.h"
 #include "SQLResponse.h"
+#include "ValueFactory.h"
 
 class Database 
 {
@@ -36,7 +37,8 @@ public:
 	bool SaveInFile(MyString& path);
 
 	bool ContainsTable(const Table& tab,int& i);
+	bool ContainsTable(const Table& tab);
 
 	bool ShowTables();
-
+	SQLResponse PrintTableById(int id);
 };

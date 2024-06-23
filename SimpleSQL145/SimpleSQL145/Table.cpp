@@ -105,6 +105,11 @@ void Table::setName(MyString& _name)
 	name = _name;
 }
 
+int Table::GetRows() const
+{
+	return  cols[0].getSize();;
+}
+
 Table Table::CreateTable()
 {
 	return Table();
@@ -121,6 +126,23 @@ bool Table::ContainsCol(MyString& mstr, int& index)
 		}
 	}
 	return false;
+}
+
+bool Table::ContainsCol(MyString& mstr)
+{
+	int i = 0;
+	return ContainsCol(mstr, i);
+}
+
+bool Table::AddValueInCol(int indexCol,const Value& val)
+{
+	this->cols[indexCol].AddValue(val);
+	return true;
+}
+
+ValueType Table::GetTypeOfColByInd(int ind)
+{
+	return this->cols[ind].getType();
 }
 
 bool Table::AddCol(Col& col)
@@ -156,11 +178,10 @@ bool Table::PrintTable()
 		std::cout << "| " << this->cols[i].getName();
 	}std::cout << " |\n";
 	PrintALine(this->size);
-
-	int rows = cols[0].getSize();
-	for (size_t i = 0; i < size; i++)
+	int rows = GetRows();
+	for (size_t i = 0; i < rows; i++)
 	{
-		for (size_t j = 0; j < rows; j++)
+		for (size_t j = 0; j < size; j++)
 		{
 			std::cout << "|    ";
 			cols[j].printValueAtIndex(i);
@@ -170,6 +191,25 @@ bool Table::PrintTable()
 	}
 	PrintALine(this->size);
 	return true;
+}
+
+bool Table::PrintTable(MyString* mstrpn, const int s)
+{
+	Table t("TempT");
+	for (size_t i = 0; i < s; i++)
+	{
+		for (size_t j = 0; j < size; j++)
+		{
+			if (mstrpn[i] == this->cols[j].getName())
+			{
+				t.AddCol(cols[j]);
+				break;
+			}
+		}
+	}
+	t.PrintTable();
+
+	return false;
 }
 
 std::ostream& operator<<(std::ostream& os, const Table& obj)

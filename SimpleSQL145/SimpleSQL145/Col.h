@@ -38,6 +38,8 @@ public:
 
 	void setType(ValueType valt);
 	void printValueAtIndex(uint16_t index);
+
+	bool AddValue(const Value& val);
 	
 	friend std::ostream& operator<<(std::ostream& os, const Col& obj);
 	friend std::istream& operator>>(std::istream& is, Col& ref);
