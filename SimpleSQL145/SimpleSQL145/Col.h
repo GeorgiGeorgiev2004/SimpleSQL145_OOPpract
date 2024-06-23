@@ -33,8 +33,11 @@ public:
 	~Col();
 
 	ValueType getType() const;
+	int getSize() const;
+	MyString getName() const;
+
 	void setType(ValueType valt);
-	
+	void printValueAtIndex(uint16_t index);
 	
 	friend std::ostream& operator<<(std::ostream& os, const Col& obj);
 	friend std::istream& operator>>(std::istream& is, Col& ref);

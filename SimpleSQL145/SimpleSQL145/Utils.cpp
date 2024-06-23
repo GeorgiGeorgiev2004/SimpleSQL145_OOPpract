@@ -76,3 +76,11 @@ int GetType(const MyString str)
 	}
 	return-1;
 }
+
+void PrintALine(int size)
+{
+	for (size_t i = 0; i < size; i++)
+	{
+		std::cout << plusANDdash;
+	}std::cout << finisher << "\n";
+}

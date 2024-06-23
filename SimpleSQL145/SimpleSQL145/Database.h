@@ -35,6 +35,8 @@ public:
 
 	bool SaveInFile(MyString& path);
 
+	bool ContainsTable(const Table& tab,int& i);
+
 	bool ShowTables();
 
 };

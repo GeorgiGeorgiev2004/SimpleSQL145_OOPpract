@@ -102,11 +102,33 @@ Col::~Col()
 ValueType Col::getType() const
 {
 	return type;
-};
+}
+int Col::getSize() const
+{
+	return this->size;
+}
+MyString Col::getName() const
+{
+	return MyString(this->name);
+}
+;
 void Col::setType(ValueType valt)
 {
 	type = valt;
-};
+}
+void Col::printValueAtIndex(uint16_t index)
+{
+	if (index>=size)
+	{
+		std::cout << "Error: Index out of bounds.";
+		return;
+	}
+	else
+	{
+	  this->val[index]->printValue();
+	}
+}
+;
 
 std::ostream& operator<<(std::ostream& os, const Col& obj)
 {
@@ -148,8 +170,6 @@ std::istream& operator>>(std::istream& is, Col& obj)
 	obj.type = (ValueType)type;
 	for (size_t i = 0; i < obj.size; i++)
 	{
-		//Controversial desicion. Could be done with unique pointers.
-		//Mid session I lack the time to spend on figuring that out as well.
 		switch ((ValueType)obj.type)
 		{
 		case ValueType::text: {

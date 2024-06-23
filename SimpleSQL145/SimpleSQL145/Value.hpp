@@ -15,4 +15,6 @@ public:
 	virtual Value* clone() const = 0;
 
 	virtual ~Value() = default;
+	
+	bool HasValue = 0;
 };

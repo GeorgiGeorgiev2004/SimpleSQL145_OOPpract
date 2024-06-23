@@ -1,5 +1,7 @@
 #pragma once
 #include "Table.h"
+#include "Utils.h"
+#include <SQLResponse.h>
 
 void Table::free()
 {
@@ -108,6 +110,19 @@ Table Table::CreateTable()
 	return Table();
 }
 
+bool Table::ContainsCol(MyString& mstr, int& index)
+{
+	for (size_t i = 0; i < size; i++)
+	{
+		if (mstr==cols[i].getName())
+		{
+			index = i; 
+			return true;
+		}
+	}
+	return false;
+}
+
 bool Table::AddCol(Col& col)
 {
 	if (capacity==size)
@@ -115,6 +130,45 @@ bool Table::AddCol(Col& col)
 		resize();
 	}
 	cols[size++] = col;
+	return true;
+}
+
+bool Table::RemoveCol(Col& col)
+{
+	for (size_t i = 0; i < this->size; i++)
+	{
+		if (col.getName() == cols[i].getName())
+		{
+			std::swap(cols[i], cols[size - 1]);
+			cols[size - 1] = Col();
+			size--;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Table::PrintTable()
+{
+	PrintALine(this->size);
+	for (size_t i = 0; i < size; i++)
+	{
+		std::cout << "| " << this->cols[i].getName();
+	}std::cout << " |\n";
+	PrintALine(this->size);
+
+	int rows = cols[0].getSize();
+	for (size_t i = 0; i < size; i++)
+	{
+		for (size_t j = 0; j < rows; j++)
+		{
+			std::cout << "|    ";
+			cols[j].printValueAtIndex(i);
+			std::cout << " |";
+		}
+		std::cout << "\n";
+	}
+	PrintALine(this->size);
 	return true;
 }
 

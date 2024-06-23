@@ -19,7 +19,6 @@ void Database::copyFrom(const Database& other)
 
 void Database::free()
 {
-	path = "";
 	cap = 8;
 	count = 0;
 	delete[] tables;
@@ -105,7 +104,7 @@ bool Database::DeleteTable(MyString& name)
 		if (tables[i].getName()==name)
 		{
 			std::swap(tables[i], tables[count-1]);
-			tables[count - 1].~Table();
+			tables[count - 1]=Table();
 			count--;
 			return true;
 		}
@@ -175,14 +174,29 @@ bool Database::ShowTables()
 		}
 		for (size_t i = 0; i < count; i++)
 		{
+			std::cout <<plusANDdash+plusANDdash+finisher+"\n";
 			std::cout << tables[i].getName()<<"\n";
 		}
+		std::cout << plusANDdash + plusANDdash + finisher+"\n";
 	}
 	catch (const std::exception&)
 	{
 		return false;
 	}
 	return true;
+}
+
+bool Database::ContainsTable(const Table& tab,int& index)
+{
+	for (size_t i = 0; i < count; i++)
+	{
+		if (tables[i].getName() == tab.getName())
+		{
+			index = i;
+			return true;
+		}
+	}
+	return false;
 }
 
 SQLResponse Database::executeQuerry(MyString str)
@@ -205,10 +219,18 @@ SQLResponse Database::executeQuerry(MyString str)
 			return ans;
 		}
 	}
+	if (args[0] == "drop" && args[1] == "table")
+	{
+		if (this->DeleteTable(args[2]))
+		{
+			ans.code = Responses::Querry_OK;
+			return ans;
+		}
+	}
 	if (args[0] == "create" && args[1] == "table")
 	{
 		Table t = this->CreateTable(args[2]);
-		for (size_t i = 3; i <= CountComma*2+3; i+=2)//3 to nullify the starting possition 1 for the 2 numbers that are around a single comma
+		for (size_t i = 3; i <= CountComma*2+3; i+=2)//3 to nullify the starting possition *2 for the pairs of name-value
 		{
 			int type = GetType(args[i + 1]);
 			if (type==-1)
@@ -221,6 +243,30 @@ SQLResponse Database::executeQuerry(MyString str)
 		}
 		ans.code = Responses::Querry_OK;
 		ans.rowsAffected = 1;
+	}
+	if (args[0] == "insert" && args[1] == "into")
+	{
+		int i = 0;
+		if (!ContainsTable(Table(args[2]),i))
+		{
+			ans.code = Responses::Querry_Bad;
+			return ans;
+		}
+		Table t = Table(tables[i]);
+		int j = 3;
+		int currColIndex = 0;
+		while (args[j]!=MyString("values")) //In general I have not implemented validation for key words and names so this will most definetly break. I will either forget or run out of time.
+		{
+			if (!t.ContainsCol(args[j], currColIndex))
+			{
+				std::cout << "There is no column with the name " << args[j].c_str();
+				ans.code == Responses::Querry_Bad;
+				return ans;
+			}
+		}
+		// | | |
+		// | | |   FINISH TMRW:::::
+		// . . .
 	}
 	DeleteArgs(args, i);
 	return SQLResponse();

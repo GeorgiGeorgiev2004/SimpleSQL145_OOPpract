@@ -4,7 +4,7 @@
 int main()
 {
     MyString path = "test.txt";
-  /*Database db(path);
+    Database db(path);
     db.ShowTables();
 
     Table t = Table("Stefan");
@@ -19,15 +19,20 @@ int main()
     t.AddCol(c1);
     Col c2 =Col(name2, vt2);
     t.AddCol(c2);
-    
     db.AddTableToDb(t);
+
+    t.PrintTable();
+    
     db.SaveInFile(path);
     
     db.ReadTablesFromFile(path);
 
-    db.ShowTables();*/
+    db.ShowTables();
+    
 
     MyString a= "create table test_table (field1 int, field2 real, field12 int, field11 int);";
-    Database db(path);
     SQLResponse aaa = db.executeQuerry(a);
+    a = "drop table Stefan;";
+    aaa = db.executeQuerry(a);
+    db.ShowTables();
 }

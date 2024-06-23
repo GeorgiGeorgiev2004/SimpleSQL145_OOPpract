@@ -1,7 +1,7 @@
 #pragma once
 #include "Col.h"
 #include "MyString.h"
-class Table 
+class Table
 {
 	MyString name;
 	Col* cols = nullptr;
@@ -29,7 +29,13 @@ public:
 	MyString getName() const;
 	void setName(MyString& _name);
 
+	bool PrintTable();
+
 	Table CreateTable();
+
+	bool ContainsCol(MyString& mstr, int& index);
+
 	bool AddCol(Col& col);
+
+	bool RemoveCol(Col& col);
 };
-	
